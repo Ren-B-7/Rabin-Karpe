@@ -1,18 +1,14 @@
-## Getting Started
+## Improved? Rabin-Karpe substring search
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+This is a different implementation to the Rabin-Karpe substring search, it requires more preprocessing, but it is faster once the processing is done, thus it is faster on longer words and longer substrings.
 
 ## Folder Structure
-
-The workspace contains two folders by default, where:
-
+- 'bin': the folder that temporary files are placed in
 - `src`: the folder to maintain sources
 - `lib`: the folder to maintain dependencies
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Dependencies
+java.Math.BigInteger
+java.Lang.StrictMath
+java.Lang.Math
+java.util.LinkedHashmap
