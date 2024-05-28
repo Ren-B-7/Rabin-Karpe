@@ -15,10 +15,10 @@
             "name": "RK_adaptedprimes",
             "request": "launch",
             "mainClass": "RK_adaptedprimes",
-            "projectName": "Rabin-Karpe_a582f96b",
+            "projectName": "Rabin-Karpe Fingerprint_2964e6fe",
             "args": [
-                "sundowns",
-                "thereisasillymaninthestreetwavinghisarmsonasundayeveningatsundownhisnameisbrianhewasemployedatthetownofsundowns"
+                "sundown",
+                "thestrangemanwasseenwavinghisarmsinthestreetonsundayatsunsethisnamewasbrianfromthecityofsundown"
             ]
         }
     ]

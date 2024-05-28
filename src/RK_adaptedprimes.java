@@ -39,17 +39,17 @@ public class RK_adaptedprimes {
     }
 
     /**
-     * Calculates the hash value for the given pattern using the adapted primes
-     * method.
-     * Combined with the update map method, this method is used to update the
-     * prime_map and calculate the hash value
+     * Calculates the hash value for the given pattern using the values_map and
+     * their
+     * corresponding chars. It updates the value_map if the values dont exist and
+     * returns the double of the hash value
      *
      * @param pattern the input pattern for which the hash value is calculated
-     * @return the calculated hash value as a BigInteger
+     * @return the calculated hash value as a double
      */
     private static double hashcalc(String pattern) {
-        // Set the local and global differ_rm values to 1
-        Double value = differ_rm = 1.0;
+        // Set the local and global values to 1
+        double value = differ_rm = 1.0;
         for (int counter = 0; counter < M; counter++) {
             // Get the int corrosponding to the char
             int c = pattern.charAt(counter);
@@ -60,7 +60,7 @@ public class RK_adaptedprimes {
             // Get the corrosponding value
             double p = value_map.get(c);
             // Calculate the unique hash value
-            value = value * (power(p, counter + 1));
+            value = value * (StrictMath.pow(p, counter + 1));
             // Set differ_rm to the product of the previous differ_rm and p
             differ_rm = differ_rm * (p);
         }
@@ -73,7 +73,7 @@ public class RK_adaptedprimes {
     }
 
     /**
-     * Recognizes a pattern in a given text using the adapted primes method.
+     * Recognizes a pattern in a given text using the adapted math of rabin-karpe.
      *
      * @param text the input text to search for the pattern
      * @return true if the pattern is found at the beginning of the text, false
@@ -90,10 +90,11 @@ public class RK_adaptedprimes {
         if (hashpattern == txtHash)
             return true; // Match at beginning.
 
+        // double adapt;
         char[] chars = text.toCharArray();
         for (int i = M; i < text.length(); i++) {
-            // Remove entire differ_rm since at start we have (value ^ Index) of each, thus
-            // if we divide by value, index amount of times we are left with 1
+            // Remove 1 of each prime number, since at start we have (Prime ^ Index) of each
+            // index [0-M-1]
             txtHash *= chars[i] / differ_rm;
 
             // Check for match, done before other changes are made
@@ -103,35 +104,22 @@ public class RK_adaptedprimes {
                     : (hashpattern - txtHash < epsilon)) {
                 return true;
             }
-            // Adds leading digit and removes trailling digit
+            // Adds leading digit to the differ_rm long item
             differ_rm *= value_map.get((int) chars[i]) / value_map.get((int) chars[i - M]);
         }
         return false; // no match found
     }
 
-    /**
-     * Calculates the power of a base number raised to an exponent.
-     *
-     * @param base     the base number
-     * @param exponent the exponent to raise the base to
-     * @return the result of the base raised to the exponent
-     */
-    public static double power(double base, int exponent) {
-        double b = 1.0;
-        for (int i = 0; i < exponent; i++) {
-            b *= base;
-        }
-        return b;
-    }
     // Per loop iteration
     // Personal algorithm
     // 0 declarations
-    // 3 assigns
-    // 15 accesses
-    // 7 math calculations
-    // 2 String operation
-    // 2 compare
+    // 2 assigns
+    // 15 accesses (total, not including assigns)
+    // 6 math operations
+    // 2 compares
+    // 3 array accesses
     // 2 map accesses
+    // 0 string operations
 
     // Deprecated functions
 
@@ -151,7 +139,7 @@ public class RK_adaptedprimes {
             if (prime < 15)
                 continue;
         }
-        return StrictMath.pow(prime, 1.0 / M);
+        return StrictMath.pow(prime, 1.0 / M * 1.0);
     }
 
     /**
@@ -184,7 +172,7 @@ public class RK_adaptedprimes {
             // index [0-M-1]
             adapt = value_map.get(text.charAt(i)).longValue();
             // txtHash = txtHash.divide(differ_rm).multiply(adapt.pow(M));
-            txtHash = (long) (Long.divideUnsigned(txtHash, differ_rmLONG) * power(txtHash.doubleValue(), M));
+            txtHash = (long) (Long.divideUnsigned(txtHash, differ_rmLONG) * StrictMath.pow(txtHash, M));
 
             // Check for match, done before other changes are made since
             if (hpattern.equals(txtHash))
@@ -226,7 +214,7 @@ public class RK_adaptedprimes {
             Long p = value_map.get(pattern.charAt(counter)).longValue();
             // if (!prime_map.containsKey(c)) prime_map.put(p, randomprime()); -- LONG
             // instead of BigInteger
-            prime = prime * ((long) power(p.doubleValue(), counter + 1));
+            prime = prime * ((long) StrictMath.pow(p.doubleValue(), counter + 1));
             differ_rmLONG = differ_rmLONG * p;
         }
 
