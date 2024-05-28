@@ -90,11 +90,10 @@ public class RK_adaptedprimes {
         if (hashpattern == txtHash)
             return true; // Match at beginning.
 
-        // double adapt;
         char[] chars = text.toCharArray();
         for (int i = M; i < text.length(); i++) {
-            // Remove 1 of each prime number, since at start we have (Prime ^ Index) of each
-            // index [0-M-1]
+            // Remove entire differ_rm since at start we have (value ^ Index) of each, thus
+            // if we divide by value, index amount of times we are left with 1
             txtHash *= chars[i] / differ_rm;
 
             // Check for match, done before other changes are made
@@ -104,7 +103,7 @@ public class RK_adaptedprimes {
                     : (hashpattern - txtHash < epsilon)) {
                 return true;
             }
-            // Adds leading digit to the differ_rm long item
+            // Adds leading digit and removes trailling digit
             differ_rm *= value_map.get((int) chars[i]) / value_map.get((int) chars[i - M]);
         }
         return false; // no match found
