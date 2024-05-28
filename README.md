@@ -8,7 +8,9 @@ This is a different implementation to the Rabin-Karpe substring search, it requi
 - `lib`: the folder to maintain dependencies
 
 ## Dependencies
-+ java.Math.BigInteger
 + java.Lang.StrictMath
-+ java.Lang.Math
 + java.util.LinkedHashmap
+
+## Deprecated dependencies (Code calling these could be removed)
++ java.Math.BigInteger
++ java.Lang.Math
