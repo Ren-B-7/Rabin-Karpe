@@ -63,7 +63,7 @@ public class RK_adaptedprimes {
         // lower the amount of preprocessing, but increasing the operations in the main
         // for loop
         for (char ch : pattern.substring(Math.min(M, pattern.length())).toCharArray()) {
-            if (value_map.containsKey(ch)) {
+            if (!value_map.containsKey(ch)) {
                 value_map.put(ch, StrictMath.pow(ch, 1.0 / (M * 1.0)));
             }
         }
@@ -92,10 +92,10 @@ public class RK_adaptedprimes {
         char[] chars = text.toCharArray();
         // If we decide to lower preprocessing we can add commented code
         // char current;
-        for (int i = M; i < text.length(); i++) {
+        for (int i = M; i < chars.length; i++) {
             /*
              * current = chars[i];
-             * if (value_map.containsKey(current)) {
+             * if (!value_map.containsKey(current)) {
              * value_map.put(current, StrictMath.pow(current, 1.0 / (M * 1.0)));
              * }
              */
