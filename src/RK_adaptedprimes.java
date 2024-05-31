@@ -1,16 +1,11 @@
 import java.lang.StrictMath;
-import java.math.*;
-import java.util.Random;
 
 // Using linkedhashmap so the order is kept from insertion while having benefits of normal hashmap
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 
 public class RK_adaptedprimes {
-    // Ordered according to its frequency in the english language
-    private final static String alphabet = "abcdefghijklmnopqrstuvwxyz";
-
-    // Using LinkedHashMap for benefit of O(1) searching and ordered insertion
-    private static LinkedHashMap<Integer, Double> value_map;
+    // Using HashMap for benefit of O(1) searching
+    private static HashMap<Integer, Double> value_map;
 
     private static double hashpattern; // pattern hash value
     private static int M; // pattern length
@@ -18,20 +13,15 @@ public class RK_adaptedprimes {
     private static double epsilon;
 
     /**
-     * The main function that initializes the prime_map, sets the pattern and M,
-     * updates the map with the pattern, calculates the pattern hash, and prints
-     * the result of pattern recognition on the second argument.
-     *
-     * @param args the command line arguments, where args[0] is the pattern and
+     * @param args the command line arguments, where
+     *             args[0] is the pattern and
      *             args[1] is the text to search for the pattern
      */
     public static void main(String[] args) {
-        value_map = new LinkedHashMap<>();
+        value_map = new HashMap<>();
 
         M = args[0].length();
-        for (char c : alphabet.toCharArray()) {
-            value_map.put((int) c, StrictMath.pow(c, 1.0 / (M * 1.0)));
-        }
+
         epsilon = 0.000000000001 * StrictMath.pow(10, M);
         hashpattern = hashcalc(args[0]);
 
@@ -112,119 +102,12 @@ public class RK_adaptedprimes {
 
     // Per loop iteration
     // Personal algorithm
-    // 0 declarations
+    // Excluding the compare statement
     // 2 assigns
-    // 15 accesses (total, not including assigns)
-    // 6 math operations
-    // 2 compares
+    // 10 accesses (total, not including assigns)
+    // 5 math operations
     // 3 array accesses
     // 2 map accesses
-    // 0 string operations
-
-    // Deprecated functions
-
-    /**
-     * @deprecated
-     *             Generates a random prime number that is not already in the
-     *             prime_map.
-     *
-     * @return a long value representing a random prime number
-     */
-    private static double randomprimeDeprecated() {
-        int prime = 2;
-        while (value_map.containsValue(prime * 1.0)) {
-            // Using bitlength of 10 since there are 200 prime numbers within bitlength of
-            // 10
-            prime = BigInteger.probablePrime(10, new Random()).intValue();
-            if (prime < 15)
-                continue;
-        }
-        return StrictMath.pow(prime, 1.0 / M * 1.0);
-    }
-
-    /**
-     * @Deprecated
-     *             Performs pattern recognition on the given text using the adapted
-     *             primes method.
-     *
-     * @param text the input text to search for the pattern
-     * @return true if the pattern is found at the beginning of the text, false
-     *         otherwise
-     */
-    private static boolean patternrecognitionDeprecated(String text) {
-        // Ensures that all characters in the substring and the string are found, else
-        // we will encounter an error
-        if (text.length() < M)
-            return false;
-
-        // Long hpattern = hashpattern.longValue();
-        Long hpattern = 1L;
-        Long txtHash = hashcalcDeprecated(text, 0);
-        // Search for hash match in text.
-        if (hpattern.equals(txtHash))
-            return true; // Match at beginning.
-
-        Long adapt;
-        // Long differ_rmLONG = differ_rm.longValue();
-        Long differ_rmLONG = 1L;
-        for (int i = M; i < text.length(); i++) {
-            // Remove 1 of each prime number, since at start we have (Prime ^ Index) of each
-            // index [0-M-1]
-            adapt = value_map.get(text.charAt(i)).longValue();
-            // txtHash = txtHash.divide(differ_rm).multiply(adapt.pow(M));
-            txtHash = (long) (Long.divideUnsigned(txtHash, differ_rmLONG) * StrictMath.pow(txtHash, M));
-
-            // Check for match, done before other changes are made since
-            if (hpattern.equals(txtHash))
-                return true;
-            // Adds leading digit to the differ_rm long item
-            differ_rmLONG = Long.divideUnsigned(differ_rmLONG, value_map.get(text.charAt(i - M)).longValue()) * adapt;
-        }
-        return false; // no match found
-    }
-
-    /**
-     * @deprecated
-     *             Updates the prime_map by adding a random prime number for each
-     *             character in the given text if the character is not already
-     *             present in the map.
-     *
-     * @param text the input text to update the prime_map
-     */
-    private static void updatemap(String text) {
-        for (Character c : text.toCharArray()) {
-            if (!value_map.containsKey(c)) {
-                value_map.put((int) c, randomprime());
-            }
-        }
-    }
-
-    /**
-     * @deprecated
-     *             Calculates the hash value for the given pattern using the adapted
-     *             primes method.
-     *
-     * @param pattern the input pattern for which the hash value is calculated
-     * @return the calculated hash value as a Long
-     */
-    private static Long hashcalcDeprecated(String pattern, int m) {
-        Long differ_rmLONG;
-        Long prime = differ_rmLONG = 1L;
-        for (int counter = 0; counter < M; counter++) {
-            Long p = value_map.get(pattern.charAt(counter)).longValue();
-            // if (!prime_map.containsKey(c)) prime_map.put(p, randomprime()); -- LONG
-            // instead of BigInteger
-            prime = prime * ((long) StrictMath.pow(p.doubleValue(), counter + 1));
-            differ_rmLONG = differ_rmLONG * p;
-        }
-
-        for (char c : pattern.substring(Math.min(M, pattern.length())).toCharArray()) {
-            // If it is not found in the map we add it with a unique prime number
-            if (!value_map.containsKey(c))
-                value_map.put((int) c, randomprime());
-        }
-        return prime;
-    }
 
     // Rabin-Karpe algorithm from algs4
     private static int algs4rabinkarpe() {
@@ -244,12 +127,11 @@ public class RK_adaptedprimes {
             if ((patHash == txtHash))
                 return i - M + 1;
 
-            // 0 declaration
+            // Not including the compare if statement
             // 2 assigns
-            // 17 accesses
-            // 11 Math calculations
+            // 13 accesses (total not including return or assigns)
+            // 9 Math calculations (not including return)
             // 2 String operations
-            // 1 compare
         }
         return N;
     }
