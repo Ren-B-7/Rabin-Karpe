@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class RK_adaptedprimes {
     // Using HashMap for benefit of O(1) searching
-    private static HashMap<Integer, Double> value_map;
+    private static HashMap<Character, Double> value_map;
 
     private static double hashpattern; // pattern hash value
     private static int M; // pattern length
@@ -40,15 +40,17 @@ public class RK_adaptedprimes {
     private static double hashcalc(String pattern) {
         // Set the local and global values to 1
         double value = differ_rm = 1.0;
+        char c;
+        double p;
         for (int counter = 0; counter < M; counter++) {
             // Get the int corrosponding to the char
-            int c = pattern.charAt(counter);
+            c = pattern.charAt(counter);
             // If it is not found in the map we add its ascii with a unique number
             if (!value_map.containsKey(c))
                 value_map.put(c, StrictMath.pow(c, 1.0 / (M * 1.0)));
 
             // Get the corrosponding value
-            double p = value_map.get(c);
+            p = value_map.get(c);
             // Calculate the unique hash value
             value = value * (StrictMath.pow(p, counter + 1));
             // Set differ_rm to the product of the previous differ_rm and p
@@ -56,8 +58,14 @@ public class RK_adaptedprimes {
         }
         // Update the value_map with the remaining characters, if there are any
         // unchecked characters
-        for (char c : pattern.substring(Math.min(M, pattern.length())).toCharArray()) {
-            value_map.put((int) c, StrictMath.pow(c, 1.0 / (M * 1.0)));
+
+        // We can replace this code by putting the if statement into the math loop,
+        // lower the amount of preprocessing, but increasing the operations in the main
+        // for loop
+        for (char ch : pattern.substring(Math.min(M, pattern.length())).toCharArray()) {
+            if (value_map.containsKey(ch)) {
+                value_map.put(ch, StrictMath.pow(ch, 1.0 / (M * 1.0)));
+            }
         }
         return value;
     }
@@ -82,10 +90,23 @@ public class RK_adaptedprimes {
 
         // double adapt;
         char[] chars = text.toCharArray();
+        // If we decide to lower preprocessing we can add commented code
+        // char current;
         for (int i = M; i < text.length(); i++) {
+            /*
+             * current = chars[i];
+             * if (value_map.containsKey(current)) {
+             * value_map.put(current, StrictMath.pow(current, 1.0 / (M * 1.0)));
+             * }
+             */
+
             // Remove 1 of each prime number, since at start we have (Prime ^ Index) of each
             // index [0-M-1]
             txtHash *= chars[i] / differ_rm;
+
+            // If we decide to lower the preprocessing we can use commented code instead of
+            // whats above this
+            // txtHash *= current / differ_rm;
 
             // Check for match, done before other changes are made
             // since changes wont be necesary then
@@ -95,7 +116,11 @@ public class RK_adaptedprimes {
                 return true;
             }
             // Adds leading digit to the differ_rm long item
-            differ_rm *= value_map.get((int) chars[i]) / value_map.get((int) chars[i - M]);
+            differ_rm *= value_map.get(chars[i]) / value_map.get(chars[i - M]);
+            // If we decide to lower the preprocessing we can use commented code instead of
+            // whats above this
+            // differ_rm *= value_map.get(current) / value_map.get((int) chars[i - M]);
+
         }
         return false; // no match found
     }
