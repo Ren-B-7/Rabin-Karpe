@@ -11,7 +11,7 @@ It was made by me personally while at Stellenbosch, some of the code was also ch
 
 ## Dependencies
 + java.Lang.StrictMath
-+ java.util.LinkedHashmap
++ java.util.HashMap
 
 ## Deprecated dependencies (Code calling these could be removed)
 + java.Math.BigInteger
